@@ -4,8 +4,10 @@
   "description": "Orbit - Mission Control for Teams",
   "scripts": {
     "postinstall": "cd backend && npm install && cd ../frontend && npm install",
-    "seed": "cd backend && npm run seed",
-    "start": "concurrently \"cd backend && npm start\" \"cd frontend && npm run dev\""
+    "build": "cd frontend && npm run build",
+    "start": "cd backend && npm start",
+    "dev": "concurrently \"cd backend && npm start\" \"cd frontend && npm run dev\"",
+    "seed": "cd backend && npm run seed"
   },
   "dependencies": {
     "concurrently": "^8.2.2"
