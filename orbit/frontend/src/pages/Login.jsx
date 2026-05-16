@@ -38,7 +38,7 @@ export default function Login() {
     const draw = () => {
       ctx.fillStyle = 'rgba(5, 8, 16, 0.3)'; // Dark space background with trail effect
       ctx.fillRect(0, 0, canvas.width, canvas.height);
-      
+
       const cx = canvas.width / 2;
       const cy = canvas.height / 2;
 
@@ -100,8 +100,8 @@ export default function Login() {
 
   return (
     <div className="min-h-screen flex items-center justify-center relative overflow-hidden bg-space p-4">
-      <canvas 
-        ref={canvasRef} 
+      <canvas
+        ref={canvasRef}
         className="absolute inset-0 w-full h-full z-0"
         style={{ pointerEvents: 'none' }}
       />
@@ -109,7 +109,7 @@ export default function Login() {
         {/* Decorative elements */}
         <div className="absolute top-0 right-0 w-32 h-32 bg-neon/10 rounded-full blur-3xl animate-float"></div>
         <div className="absolute bottom-0 left-0 w-32 h-32 bg-indigo-500/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '1.5s' }}></div>
-        
+
         <div className="flex flex-col items-center mb-8 relative z-10">
           <div className="p-3 bg-white/5 rounded-full border border-white/10 mb-4 animate-pulse-glow">
             <Rocket className="w-8 h-8 text-neon" />
@@ -127,12 +127,12 @@ export default function Login() {
           {!isLogin && !isForgotPassword && (
             <div>
               <label className="block text-xs font-medium text-white/50 mb-1 uppercase tracking-wider">Full Name</label>
-              <input type="text" required className="input-field" value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} placeholder="John Doe" />
+              <input type="text" required className="input-field" value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} placeholder="John Doe" />
             </div>
           )}
           <div>
             <label className="block text-xs font-medium text-white/50 mb-1 uppercase tracking-wider">Email Address</label>
-            <input type="email" required className="input-field" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} placeholder="user@orbit.com" />
+            <input type="email" required className="input-field" value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} placeholder="user@orbit.com" />
           </div>
           {!isForgotPassword && (
             <div>
@@ -144,7 +144,7 @@ export default function Login() {
                   </button>
                 )}
               </div>
-              <input type="password" required className="input-field" value={formData.password} onChange={e => setFormData({...formData, password: e.target.value})} placeholder="••••••••" minLength={8} />
+              <input type="password" required className="input-field" value={formData.password} onChange={e => setFormData({ ...formData, password: e.target.value })} placeholder="••••••••" minLength={8} />
             </div>
           )}
           <button type="submit" className={`btn-primary w-full mt-6 py-3 ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`} disabled={isLoading}>
