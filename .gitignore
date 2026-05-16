@@ -1,0 +1,8 @@
+node_modules
+dist
+.env
+database.sqlite
+.vite
+orbit/frontend/dist
+orbit/backend/node_modules
+orbit/frontend/node_modules
