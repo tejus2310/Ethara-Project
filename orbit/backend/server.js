@@ -34,6 +34,9 @@ const PORT = process.env.PORT || 5000;
 
 sequelize.sync().then(() => {
   console.log('Database synced');
+  // Log env check (without exposing actual secrets)
+  console.log('ENV CHECK → JWT_SECRET set:', !!process.env.JWT_SECRET);
+  console.log('ENV CHECK → DB_URL set:', !!process.env.DB_URL);
   app.listen(PORT, () => {
     console.log(`Mission Control (Backend) running on port ${PORT}`);
   });
