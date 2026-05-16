@@ -31,7 +31,7 @@ The backend will run on `http://localhost:5000` and the frontend will run on `ht
 ## Environment Variables
 The `.env` file is already included in `backend/.env` with defaults:
 - `PORT=5000`
-- `JWT_SECRET=supersecretspacekey_orbit_2024`
+- `JWT_SECRET=your_jwt_secret_here`
 - `DB_URL=sqlite://database.sqlite`
 
 ## API Documentation

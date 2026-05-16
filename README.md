@@ -65,7 +65,7 @@ Make sure you have Node.js installed on your machine.
 Create a `.env` file in the `backend` directory and add the following variables:
 ```env
 PORT=5000
-JWT_SECRET=supersecretspacekey_orbit_2024
+JWT_SECRET=your_jwt_secret_here
 DB_URL=sqlite://database.sqlite
 EMAIL_USER=your_test_email@gmail.com
 EMAIL_PASS=your_app_password
