@@ -147,15 +147,6 @@ export default function Login() {
               <input type="password" required className="input-field" value={formData.password} onChange={e => setFormData({...formData, password: e.target.value})} placeholder="••••••••" minLength={8} />
             </div>
           )}
-          {!isLogin && !isForgotPassword && (
-            <div>
-              <label className="block text-xs font-medium text-white/50 mb-1 uppercase tracking-wider">Role</label>
-              <select className="input-field [&>option]:bg-space" value={formData.role} onChange={e => setFormData({...formData, role: e.target.value})}>
-                <option value="Member">Member</option>
-                <option value="Admin">Admin</option>
-              </select>
-            </div>
-          )}
           <button type="submit" className={`btn-primary w-full mt-6 py-3 ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`} disabled={isLoading}>
             {isLoading ? 'Processing...' : (isForgotPassword ? 'Send Reset Link' : (isLogin ? 'Login' : 'Register Member'))}
           </button>
