@@ -34,6 +34,17 @@ The `.env` file is already included in `backend/.env` with defaults:
 - `JWT_SECRET=your_jwt_secret_here`
 - `DB_URL=sqlite://database.sqlite`
 
+## Railway Deployment
+1. Push the repository to GitHub.
+2. Create a new Railway project and connect the GitHub repo.
+3. Railway will detect the `Dockerfile` and build the app.
+4. Set the following environment variables in Railway:
+   - `JWT_SECRET` (required)
+   - `PORT` (optional; Railway provides one automatically)
+5. Deploy the service and Railway will expose the backend with the frontend served from the same container.
+
+> Note: This app uses SQLite for runtime persistence. Railway containers are ephemeral, so use this deployment for demo/testing or switch to a managed database for production.
+
 ## API Documentation
 
 | Method | Endpoint | Description | Role |
