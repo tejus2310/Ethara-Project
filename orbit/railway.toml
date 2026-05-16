@@ -1,12 +1,6 @@
 [build]
 builder = "nixpacks"
-buildCommand = "npm install && cd frontend && npm install && npm run build && cd ../backend && npm install"
+buildCommand = "cd frontend && npm install && npm run build && cd ../backend && npm install"
 
 [deploy]
-startCommand = "cd backend && node server.js"
-
-[[services]]
-name = "orbit"
-
-[services.variables]
-PORT = "8080"
+startCommand = "node backend/server.js"
