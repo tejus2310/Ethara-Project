@@ -13,8 +13,25 @@ if (process.env.DB_URL && process.env.DB_URL.startsWith('postgres')) {
         rejectUnauthorized: false
       }
     },
+    // Each warm serverless container holds its own pool, so a generous per-pool
+    // max multiplies across containers and exhausts the database's connection
+    // limit under load. Keep it small and drop idle handles quickly.
+    pool: {
+      max: process.env.VERCEL ? 2 : 10,
+      min: 0,
+      idle: 10000,
+      acquire: 30000
+    },
     logging: false
   });
+} else if (process.env.VERCEL) {
+  // The SQLite fallback below needs the sqlite3 native module, which is not
+  // installed for deployment, and its filesystem would be wiped on every cold
+  // start anyway. Fail with the actual cause rather than a missing-dialect error.
+  throw new Error(
+    'DB_URL must be set to a postgres:// connection string on Vercel. ' +
+    'Add it under Project Settings → Environment Variables.'
+  );
 } else {
   sequelize = new Sequelize({
     dialect: 'sqlite',
