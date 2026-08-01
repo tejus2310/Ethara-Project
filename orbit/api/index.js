@@ -1,16 +1,17 @@
 const app = require('../backend/app');
 const { sequelize } = require('../backend/models');
 
-// A warm container serves many requests, so the schema sync runs once per
-// container rather than on every invocation. A failure clears the cache so the
-// next request retries instead of inheriting a permanently rejected promise.
+// The schema is already provisioned, so syncing on each cold start only spends
+// the function's time budget re-describing existing tables. Set DB_SYNC=true to
+// turn it back on for a deploy that introduces a model change.
 let ready;
 function ensureReady() {
   if (!ready) {
-    ready = sequelize.sync().catch(err => {
-      ready = undefined;
-      throw err;
-    });
+    ready = (process.env.DB_SYNC === 'true' ? sequelize.sync() : Promise.resolve())
+      .catch(err => {
+        ready = undefined; // let the next request retry rather than cache the failure
+        throw err;
+      });
   }
   return ready;
 }

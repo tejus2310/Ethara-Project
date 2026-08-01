@@ -1,12 +1,20 @@
 const { Sequelize, DataTypes } = require('sequelize');
 const path = require('path');
 
+// Sequelize resolves its driver with require(variableName), which bundlers that
+// trace imports statically — including the one Vercel builds functions with —
+// cannot follow, so pg gets dropped from the deployed bundle and every query
+// fails with "Please install pg package manually". Requiring it here puts it in
+// the trace, and dialectModule below hands Sequelize the instance directly.
+const pg = require('pg');
+
 require('dotenv').config();
 
 let sequelize;
 if (process.env.DB_URL && process.env.DB_URL.startsWith('postgres')) {
   sequelize = new Sequelize(process.env.DB_URL, {
     dialect: 'postgres',
+    dialectModule: pg,
     dialectOptions: {
       ssl: {
         require: true,
