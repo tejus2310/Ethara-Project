@@ -16,16 +16,16 @@ const handleValidation = (req, res, next) => {
 router.post('/signup', [
   body('name').notEmpty().withMessage('Name is required'),
   body('email').isEmail().withMessage('Valid email required'),
-  body('password').isLength({ min: 8 }).withMessage('Password min 8 chars'),
-  body('role').isIn(['Admin', 'Member']).withMessage('Invalid role')
+  body('password').isLength({ min: 8 }).withMessage('Password min 8 chars')
 ], handleValidation, async (req, res, next) => {
   try {
-    const { name, email, password, role } = req.body;
+    const { name, email, password } = req.body;
     const existing = await User.findOne({ where: { email } });
     if (existing) return res.status(400).json({ error: true, message: 'Email already exists' });
 
     const passwordHash = await bcrypt.hash(password, 10);
-    const user = await User.create({ name, email, passwordHash, role });
+    // Public signup always creates a Member; Admins are promoted from the admin panel.
+    const user = await User.create({ name, email, passwordHash, role: 'Member' });
 
     res.status(201).json({ message: 'User created successfully' });
   } catch (err) { next(err); }

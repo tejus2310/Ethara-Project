@@ -7,7 +7,7 @@ import api from '../api/axios';
 export default function Login() {
   const [isLogin, setIsLogin] = useState(true);
   const [isForgotPassword, setIsForgotPassword] = useState(false);
-  const [formData, setFormData] = useState({ name: '', email: '', password: '', role: 'Member' });
+  const [formData, setFormData] = useState({ name: '', email: '', password: '' });
   const [error, setError] = useState('');
   const [msg, setMsg] = useState('');
   const { login } = useAuth();
@@ -86,13 +86,16 @@ export default function Login() {
         await login(formData.email, formData.password);
         navigate('/dashboard');
       } else {
-        await api.post('/auth/signup', formData);
+        const { name, email, password } = formData;
+        await api.post('/auth/signup', { name, email, password });
         setIsLogin(true);
         setFormData({ ...formData, password: '' });
         alert('Signup successful! Please login.');
       }
     } catch (err) {
-      setError(err.response?.data?.message || 'Authentication failed');
+      // Fall back to the transport error so a misrouted /api call reads as
+      // "Network Error" instead of looking like a rejected password.
+      setError(err.response?.data?.message || err.message || 'Authentication failed');
     } finally {
       setIsLoading(false);
     }
