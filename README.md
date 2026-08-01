@@ -93,5 +93,48 @@ The application will automatically boot up:
 ## 🔒 Default Accounts
 If you run the project for the first time, the database will initialize automatically. You can register a new account on the login page. Admin access is managed securely in the database.
 
+## ☁️ Deployment (Vercel)
+
+The app is deployed as a single Vercel project: the built frontend is served from the CDN, and the Express API runs as a serverless function.
+
+| Piece | Where |
+|---|---|
+| Frontend | `orbit/frontend/dist`, built by `npm run build` |
+| API | `orbit/api/index.js`, wrapping the app from `orbit/backend/app.js` |
+| Routing | `orbit/vercel.json` — `/api/*` to the function, everything else to `index.html` |
+| Database | Postgres (Neon), via `DB_URL` |
+
+The Vercel project's **Root Directory** is `orbit`, and its production branch is `master`.
+
+### Environment variables
+
+Set these in Vercel under Project Settings, for the Production environment:
+
+| Variable | Purpose |
+|---|---|
+| `DB_URL` | `postgres://…` connection string — **required** |
+| `JWT_SECRET` | Token signing key — **required** |
+| `EMAIL_USER` / `EMAIL_PASS` | Gmail credentials for password reset (optional) |
+| `DB_SYNC` | Set to `true` for one deploy after changing a model, to sync the schema |
+
+Do not set `PORT` (assigned by the platform) or `VITE_API_URL` — leaving it unset makes the frontend call `/api` on its own origin, which avoids CORS entirely.
+
+### Deploying
+
+Pushing to `master` deploys to production automatically. To deploy the working tree directly, run from the repo root:
+
+```bash
+npx vercel --prod
+```
+
+`GET /api/__health` reports the live build, whether the app loaded, and which environment variables the function can see — useful when a deploy misbehaves.
+
+### Notes for serverless
+
+Two constraints are load-bearing, and both are easy to undo by accident:
+
+- `orbit/backend/models/index.js` requires `pg` explicitly and passes it as `dialectModule`. Sequelize otherwise resolves its driver through `require(variableName)`, which the build's static import tracer cannot follow, so the driver gets dropped from the bundle and every request fails at import.
+- Backend runtime dependencies are declared in the **root** `orbit/package.json`, because that is what the platform installs for the function. `sqlite3` is deliberately absent — it is only used by the local fallback in `backend/`.
+
 ---
 *Developed by [tejus2310](https://github.com/tejus2310) for the Ethara Project.*
