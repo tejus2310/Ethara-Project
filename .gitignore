@@ -6,3 +6,6 @@ database.sqlite
 orbit/frontend/dist
 orbit/backend/node_modules
 orbit/frontend/node_modules
+
+.vercel
+.env*
